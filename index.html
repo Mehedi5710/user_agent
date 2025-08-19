@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>UA Studio — History & Fresh Generation</title>
+  <link rel="stylesheet" href="styles.css" />
+  <meta name="theme-color" content="#0b1220" />
+</head>
+<body>
+  <main class="app">
+    <aside class="side">
+      <div class="brand">
+        <div class="logo" aria-hidden="true">
+          <svg width="38" height="38" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="24" height="24" rx="6" fill="#06b6d4"/>
+            <path d="M6 12c0-3.313 2.687-6 6-6s6 2.687 6 6-2.687 6-6 6-6-2.687-6-6z" fill="#042022" opacity="0.12"/>
+            <path d="M8.5 9.5c.8-.9 2.1-1.5 3.5-1.5 2.8 0 5 2.2 5 5 0 1.4-.6 2.7-1.5 3.5" stroke="#042022" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div>
+          <h1>UA Studio</h1>
+          <small>FB · Mobile · Generator</small>
+        </div>
+      </div>
+
+      <section class="controls card">
+        <label class="field">
+          <span>Quantity</span>
+          <input id="quantity" type="number" min="1" max="5000" value="10" />
+        </label>
+
+        <label class="field">
+          <span>Device</span>
+          <div class="device-grid" id="deviceGrid"></div>
+        </label>
+
+        <label class="field">
+          <span>Type</span>
+          <select id="uaType">
+            <option value="mixed" selected>Mixed (FB / Chrome / Safari)</option>
+            <option value="fb">Facebook In-App (FBAN / FB_IAB)</option>
+            <option value="chrome">Chrome / WebView</option>
+            <option value="safari">Mobile Safari</option>
+          </select>
+        </label>
+
+        <label class="field">
+          <span>Locale / Country</span>
+          <select id="locale">
+            <option value="auto" selected>Auto (random)</option>
+            <option value="en_US">United States (en_US)</option>
+            <option value="en_GB">United Kingdom (en_GB)</option>
+            <option value="fr_FR">France (fr_FR)</option>
+            <option value="de_DE">Germany (de_DE)</option>
+            <option value="es_ES">Spain (es_ES)</option>
+            <option value="pt_BR">Brazil (pt_BR)</option>
+            <option value="hi_IN">India (hi_IN)</option>
+            <option value="zh_CN">China (zh_CN)</option>
+            <option value="ja_JP">Japan (ja_JP)</option>
+          </select>
+        </label>
+
+        <label class="field row">
+          <input id="includeTime" type="checkbox" />
+          <span>Include timestamp token</span>
+        </label>
+
+        <label class="field">
+          <span>Uniqueness token</span>
+          <select id="uniqueToken">
+            <option value="none" selected>None (use realistic randomness)</option>
+            <option value="timestamp">Timestamp (ms)</option>
+            <option value="uuid">UUID v4</option>
+          </select>
+        </label>
+
+        <label class="field row">
+          <input id="persist" type="checkbox" checked />
+          <span>Persist list in localStorage</span>
+        </label>
+
+        <label class="field">
+          <span>Preset</span>
+          <select id="preset">
+            <option value="none" selected>None</option>
+            <option value="fb_latest">FB Latest (global)</option>
+            <option value="fb_europe">FB Europe cohort</option>
+            <option value="fb_india">FB India cohort</option>
+            <option value="chrome_new">Chrome Latest</option>
+            <option value="safari_new">Safari Latest</option>
+          </select>
+        </label>
+
+        <div class="actions">
+          <button id="generate" class="btn primary">
+            <span class="btn-text">Generate (archive old → new)</span>
+            <svg class="spinner" viewBox="0 0 50 50" aria-hidden="true"><circle cx="25" cy="25" r="20" fill="none" stroke="#0b1220" stroke-width="4" stroke-linecap="round" stroke-dasharray="31.4 31.4"></circle></svg>
+          </button>
+          <button id="clear" class="btn danger">Clear Output</button>
+        </div>
+
+        <div class="progress" aria-hidden="true">
+          <div class="progress-bar" id="progressBar" style="width:0%"></div>
+        </div>
+
+        <small class="note">Generates fresh UA batches and archives previous batches in History. Optionally append token for extra uniqueness.</small>
+      </section>
+
+      <section class="card history" id="historyCard">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+          <div><strong>History</strong><div class="muted" style="font-size:12px">Past generations</div></div>
+          <div>
+            <button id="resetAll" class="small danger">Reset All Storage</button>
+          </div>
+        </div>
+        <div id="historyList" class="history-list">
+          <!-- history rows -->
+        </div>
+      </section>
+    </aside>
+
+    <section class="main">
+      <div class="toolbar card">
+        <div class="left">
+          <button id="copyAll" class="icon-btn" title="Copy all">Copy</button>
+          <button id="download" class="icon-btn" title="Download CSV">Download</button>
+        </div>
+
+        <div class="right">
+          <input id="search" class="search" placeholder="Filter output..." />
+        </div>
+      </div>
+
+      <div class="card output-card">
+        <textarea id="output" readonly placeholder="Generated UAs will appear here..."></textarea>
+        <div class="output-footer">
+          <div id="stats" class="muted">Ready.</div>
+          <div class="tiny-actions">
+            <button id="downloadSelected" class="small">Download Selected</button>
+            <button id="restoreLast" class="small">Restore Last (preview)</button>
+          </div>
+        </div>
+      </div>
+
+      <footer class="footer">
+        <small>Designed for testing & development. Use responsibly.</small>
+      </footer>
+    </section>
+  </main>
+
+  <script src="script.js" defer></script>
+</body>
+</html>
